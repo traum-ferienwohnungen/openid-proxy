@@ -1,5 +1,7 @@
 # Grafana OAuth workaround
 
+[![Docker Build Status](https://img.shields.io/docker/build/traumfewo/openid-proxy.svg)](https://hub.docker.com/r/traumfewo/openid-proxy/)
+
 ## Description
 
 If you use Grafana `[auth.generic_oauth]` adapter and would like to authenticate your users via Microsoft Azure AD, you maybe hit the problem, that Microsoft API don't return a required field `email` in it's json response (see [grafana/issues/5877](https://github.com/grafana/grafana/issues/5877)).
