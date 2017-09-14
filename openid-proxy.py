@@ -2,6 +2,7 @@
 
 from flask import Flask, request
 import os
+import json
 import requests
 
 
@@ -30,7 +31,7 @@ def userlist():
     claims = r.json()
     if claims.get('email', '') == '':
         claims['email'] = claims.get('upn')
-    return (claims, r.status_code, dict(r.headers))
+    return (json.dumps(claims), r.status_code, dict(r.headers))
 
 
 def main():
