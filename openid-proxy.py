@@ -1,18 +1,13 @@
 #!/usr/bin/env python3
 
 from flask import Flask, request
-import json
 import os
+import json
 import requests
 
 
 app = Flask(__name__)
-
-
-@app.route('/userinfo', methods=['GET'])
-def userlist():
-    return json.dumps(
-        get_claims(request.headers.get('Authorization')))
+app.config['TENANT_ID'] = os.getenv('TENANT_ID')
 
 
 @app.route('/healthz', methods=['GET'])
@@ -20,19 +15,23 @@ def health():
     return 'OK!'
 
 
-def get_claims(id_token):
-    userinfo_endpoint = \
-        'https://login.microsoftonline.com/<tenant-id>/openid/userinfo'
-    headers = {'Authorization': id_token}
-    try:
-        request = requests.get(userinfo_endpoint, headers=headers)
-        request.raise_for_status()
-        claims = request.json()
+@app.route('/userinfo', methods=['GET'])
+def userlist():
+    info_url = 'https://login.microsoftonline.com/{}/openid/userinfo'.format(
+            app.config.get('TENANT_ID'))
+    app.logger.debug(info_url)
+    headers = {
+        'Authorization': request.headers.get('Authorization'),
+    }
+
+    r = requests.get(info_url, headers=headers)
+    if r.status_code != 200:
+        return (r.content, r.status_code, dict(r.headers))
+
+    claims = r.json()
+    if claims.get('email', '') == '':
         claims['email'] = claims.get('upn')
-        return claims
-    except requests.exceptions.HTTPError as e:
-        print(e)
-        exit(1)
+    return (json.dumps(claims), r.status_code, dict(r.headers))
 
 
 def main():
