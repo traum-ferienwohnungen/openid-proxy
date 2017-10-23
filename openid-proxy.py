@@ -1,12 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from flask import Flask, Response, request
 import os
 import json
 import requests
 import urllib
-import urlparse
-# import urllib.parse
+import urllib.parse
 
 
 app = Flask(__name__)
@@ -31,7 +30,7 @@ def token():
     app.logger.debug(token_url)
 
     # Append the client_id and client_secret into the POST data
-    body = urlparse.parse_qsl(request.get_data())
+    body = urllib.parse.parse_qsl(request.get_data())
     body.append(('client_id', request.authorization['username']))
     body.append(('client_secret', request.authorization['password']))
 
