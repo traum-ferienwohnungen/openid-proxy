@@ -6,7 +6,10 @@
 
 If you use Grafana `[auth.generic_oauth]` adapter and would like to authenticate your users via Microsoft Azure AD, you maybe hit the problem, that Microsoft API don't return a required field `email` in it's json response (see [grafana/issues/5877](https://github.com/grafana/grafana/issues/5877)).
 
-Maybe you also found an issue where Azure AD requires the `client_id` and `client_secret` fields in the POST body to `/oauth2/token`.
+Maybe you also found an issue where Azure AD requires the `client_id` and `client_secret` fields in the POST body to `/oauth2/token` (you would see something like this in your Grafana logs):
+```
+AADSTS90014: The request body must contain the following parameter: 'client_id'
+```
 
 To work around the issue we created this small script.
 
