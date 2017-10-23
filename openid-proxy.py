@@ -11,6 +11,8 @@ import urlparse
 
 app = Flask(__name__)
 app.config['TENANT_ID'] = os.getenv('TENANT_ID')
+if not app.config['TENANT_ID']:
+    app.config['TENANT_ID'] = 'common'
 base_url = os.getenv('MSFT_OAUTH_URL')
 if not base_url:
     base_url = 'https://login.microsoftonline.com'
