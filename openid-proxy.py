@@ -38,7 +38,7 @@ def token():
         method=request.method,
         url=token_url,
         headers={key: value for (key, value) in request.headers if key != 'Host'},
-        data=urllib.urlencode(body),
+        data=urllib.parse.urlencode(body),
         cookies=request.cookies,
         allow_redirects=False)
 
